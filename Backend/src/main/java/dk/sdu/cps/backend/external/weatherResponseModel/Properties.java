@@ -1,4 +1,4 @@
-package dk.sdu.cps.backend.weatherdata.responseModel;
+package dk.sdu.cps.backend.external.weatherResponseModel;
 
 import java.util.List;
 

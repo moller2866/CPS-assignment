@@ -1,6 +1,4 @@
-package dk.sdu.cps.backend.weatherdata.responseModel;
-
-import java.time.LocalDateTime;
+package dk.sdu.cps.backend.external.weatherResponseModel;
 
 public class Timeseries {
     private Data data;

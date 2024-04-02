@@ -1,3 +1,3 @@
 databaseChangeLog:
   - include:
-        file: db/changelog/CPSDatabase/20240318_weather_data.sql
+        file: db/changelog/CPSDatabase/20240318_init_weather_data.sql

@@ -1,8 +1,10 @@
-package dk.sdu.cps.backend.weatherdata;
+package dk.sdu.cps.backend.external;
 
-import dk.sdu.cps.backend.weatherdata.responseModel.Details;
-import dk.sdu.cps.backend.weatherdata.responseModel.Timeseries;
-import dk.sdu.cps.backend.weatherdata.responseModel.WeatherResponse;
+import dk.sdu.cps.backend.external.weatherResponseModel.Details;
+import dk.sdu.cps.backend.repository.WeatherRecord;
+import dk.sdu.cps.backend.repository.WeatherRepository;
+import dk.sdu.cps.backend.external.weatherResponseModel.Timeseries;
+import dk.sdu.cps.backend.external.weatherResponseModel.WeatherResponse;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -10,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Optional;
 
 @Component
 public class WeatherDataComponent {
@@ -35,21 +36,19 @@ public class WeatherDataComponent {
         assert response != null;
         Timeseries firstEntry = response.getProperties().getTimeseries().get(0);
         LocalDateTime time = Instant.parse(firstEntry.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        Optional<WeatherData> existingRecord = weatherRepository.findByTime(time);
-
-        if (existingRecord.isPresent()) {
+        Details details = firstEntry.getData().getInstant().getDetails();
+        WeatherRecord latestWeatherData = weatherRepository.getLatestWeatherData();
+        if (latestWeatherData != null && latestWeatherData.getTime().equals(time)) {
             return;
         }
-        Details details = firstEntry.getData().getInstant().getDetails();
-        WeatherData weatherData = new WeatherData();
+        WeatherRecord weatherData = new WeatherRecord();
         weatherData.setTime(time);
         weatherData.setAirTemperature(details.getAir_temperature());
         weatherData.setRelativeHumidity(details.getRelative_humidity());
         weatherData.setWindFromDirection(details.getWind_from_direction());
         weatherData.setWindSpeed(details.getWind_speed());
         weatherData.setWindSpeedOfGust(details.getWind_speed_of_gust());
-        weatherData.setCity("Odense");
-        weatherRepository.save(weatherData);
+        weatherRepository.create(weatherData);
     }
 
 }
