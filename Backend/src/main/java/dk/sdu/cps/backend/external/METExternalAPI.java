@@ -1,5 +1,6 @@
 package dk.sdu.cps.backend.external;
 
+import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
 import dk.sdu.cps.backend.dto.LocationDTO;
 import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
 import dk.sdu.cps.backend.external.weatherResponseModel.Details;
@@ -15,17 +16,16 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class WeatherDataComponent {
+public class METExternalAPI {
 
     private final RestTemplate restTemplate;
     private final WeatherMeasurementRepositoryImpl weatherRepository;
     private final LocationRepository locationRepository;
 
-    public WeatherDataComponent(RestTemplate restTemplate, WeatherMeasurementRepositoryImpl weatherRepository, LocationRepository locationRepository) {
+    public METExternalAPI(RestTemplate restTemplate, WeatherMeasurementRepositoryImpl weatherRepository, LocationRepository locationRepository) {
         this.restTemplate = restTemplate;
         this.weatherRepository = weatherRepository;
         this.locationRepository = locationRepository;
@@ -50,7 +50,7 @@ public class WeatherDataComponent {
         LocalDateTime time = Instant.parse(firstEntry.time()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         Details details = firstEntry.data().instant().details();
         Next_1_hours next1Hours = firstEntry.data().next_1_hours();
-        WeatherMeasurementDTO latestWeatherData = weatherRepository.getLatestFromLocation(location.getName());
+        IWeatherMeasurementDTO latestWeatherData = weatherRepository.getLatestFromLocation(location.getName());
         if (latestWeatherData != null && latestWeatherData.getTimeStamp().equals(time)) {
             return;
         }

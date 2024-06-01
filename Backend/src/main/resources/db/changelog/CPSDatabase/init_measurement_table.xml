@@ -4,94 +4,28 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <!-- Changeset for creating tables and inserting data -->
     <changeSet id="1" author="moller">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="measurement"/>
+            </not>
+        </preConditions>
         <sql>
-            CREATE TABLE location
-            (
-                name      VARCHAR(255) PRIMARY KEY NOT NULL,
-                longitude REAL                     NOT NULL,
-                latitude  REAL                     NOT NULL
-            );
-
-            INSERT INTO location (name, longitude, latitude)
-            VALUES ('Copenhagen', 12.568337, 55.676098);
-            INSERT INTO location (name, longitude, latitude)
-            VALUES ('Aarhus', 10.203921, 56.162939);
-            INSERT INTO location (name, longitude, latitude)
-            VALUES ('Odense', 10.402370, 55.403756);
-
             CREATE TABLE measurement
             (
-                id                  SERIAL PRIMARY KEY NOT NULL,
+                id                   SERIAL PRIMARY KEY NOT NULL,
                 location_name        VARCHAR(255)       NOT NULL,
                 time_stamp           TIMESTAMP          NOT NULL,
-                temperature         REAL,
-                humidity            INT,
+                temperature          REAL,
+                humidity             INT,
                 precipitation_amount REAL,
-                wind_of_gust          REAL,
+                wind_of_gust         REAL,
                 wind_speed           REAL,
                 wind_direction       REAL,
-                next_hour_sym         VARCHAR(255),
+                next_hour_sym        VARCHAR(255),
                 FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE,
                 CONSTRAINT measurement_location_name_fk FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE
             );
         </sql>
-
-
-        <!--        <createTable tableName="location">-->
-        <!--            <column name="name" type="VARCHAR(255)">-->
-        <!--                <constraints primaryKey="true" nullable="false"/>-->
-        <!--            </column>-->
-        <!--            <column name="longitude" type="REAL">-->
-        <!--                <constraints nullable="false"/>-->
-        <!--            </column>-->
-        <!--            <column name="latitude" type="REAL">-->
-        <!--                <constraints nullable="false"/>-->
-        <!--            </column>-->
-        <!--        </createTable>-->
-
-        <!--        <insert tableName="location">-->
-        <!--            <column name="name" value="Copenhagen"/>-->
-        <!--            <column name="longitude" value="12.568337"/>-->
-        <!--            <column name="latitude" value="55.676098"/>-->
-        <!--        </insert>-->
-        <!--        <insert tableName="location">-->
-        <!--            <column name="name" value="Aarhus"/>-->
-        <!--            <column name="longitude" value="10.203921"/>-->
-        <!--            <column name="latitude" value="56.162939"/>-->
-        <!--        </insert>-->
-        <!--        <insert tableName="location">-->
-        <!--            <column name="name" value="Odense"/>-->
-        <!--            <column name="longitude" value="10.402370"/>-->
-        <!--            <column name="latitude" value="55.403756"/>-->
-        <!--        </insert>-->
-
-        <!--        <createTable tableName="measurement">-->
-        <!--            <column name="id" type="serial">-->
-        <!--                <constraints nullable="false" primaryKey="true"/>-->
-        <!--            </column>-->
-        <!--            <column name="locationName" type="VARCHAR(255)">-->
-        <!--                <constraints nullable="false"/>-->
-        <!--            </column>-->
-        <!--            <column name="timeStamp" type="TIMESTAMP">-->
-        <!--                <constraints nullable="false"/>-->
-        <!--            </column>-->
-        <!--            <column name="temperature" type="REAL"/>-->
-        <!--            <column name="humidity" type="INT"/>-->
-        <!--            <column name="precipitationAmount" type="REAL"/>-->
-        <!--            <column name="windOfGust" type="REAL"/>-->
-        <!--            <column name="windSpeed" type="REAL"/>-->
-        <!--            <column name="windDirection" type="REAL"/>-->
-        <!--            <column name="nextHourSym" type="VARCHAR(255)"/>-->
-        <!--        </createTable>-->
-
-        <!--        <addForeignKeyConstraint-->
-        <!--                baseTableName="measurement"-->
-        <!--                baseColumnNames="locationName"-->
-        <!--                referencedTableName="location"-->
-        <!--                referencedColumnNames="name"-->
-        <!--                onDelete="CASCADE"-->
-        <!--                constraintName="measurement_locationName_fkey"/>-->
     </changeSet>
 </databaseChangeLog>

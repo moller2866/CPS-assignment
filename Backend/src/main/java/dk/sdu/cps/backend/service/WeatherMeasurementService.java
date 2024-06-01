@@ -1,33 +1,42 @@
 package dk.sdu.cps.backend.service;
 
-import dk.sdu.cps.backend.repository.WeatherRecord;
-import dk.sdu.cps.backend.repository.WeatherRepository;
+import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
+import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
+import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
+import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class WeatherService {
-    private WeatherRepository weatherRepository;
+public class WeatherMeasurementService {
+    private final WeatherMeasurementRepository weatherRepository;
+    private final LocationService locationService;
 
-    public WeatherService(WeatherRepository weatherRepository) {
+    public WeatherMeasurementService(WeatherMeasurementRepository weatherRepository, LocationService locationService) {
         this.weatherRepository = weatherRepository;
+        this.locationService = locationService;
     }
 
-    public WeatherRecord getLatestWeatherData() {
-        return weatherRepository.getLatestWeatherData();
+    public List<IWeatherMeasurementDTO> getWeatherDataSince(LocalDateTime time, String name) throws LocationNotFoundException {
+        if (locationService.getLocation(name) == null) {
+            throw new LocationNotFoundException(name);
+        }
+        return weatherRepository.getSinceFromLocation(time, name);
     }
 
-    public List<WeatherRecord> getWeatherDataSince(LocalDateTime time) {
-        return weatherRepository.getWeatherDataSince(time);
+    public List<IWeatherMeasurementDTO> getAllFromLocation(String name) throws LocationNotFoundException {
+        if (locationService.getLocation(name) == null) {
+            throw new LocationNotFoundException(name);
+        }
+        return weatherRepository.getAllFromLocation(name);
     }
 
-    public List<WeatherRecord> getAll() {
-        return weatherRepository.getAll();
-    }
-
-    public WeatherRecord getLatest() {
-        return weatherRepository.getLatestWeatherData();
+    public IWeatherMeasurementDTO getLatestFromLocation(String name) throws LocationNotFoundException {
+        if (locationService.getLocation(name) == null) {
+            throw new LocationNotFoundException(name);
+        }
+        return weatherRepository.getLatestFromLocation(name);
     }
 }
