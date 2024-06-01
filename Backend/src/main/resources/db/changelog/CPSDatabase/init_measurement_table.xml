@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="moller">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="measurement"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE measurement
+            (
+                id                   SERIAL PRIMARY KEY NOT NULL,
+                location_name        VARCHAR(255)       NOT NULL,
+                time_stamp           TIMESTAMP          NOT NULL,
+                temperature          REAL,
+                humidity             INT,
+                precipitation_amount REAL,
+                wind_of_gust         REAL,
+                wind_speed           REAL,
+                wind_direction       REAL,
+                next_hour_sym        VARCHAR(255),
+                FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE,
+                CONSTRAINT measurement_location_name_fk FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

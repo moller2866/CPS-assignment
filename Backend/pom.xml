@@ -58,8 +58,7 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.26.0</version>
                 <configuration>
-                    <changeLogDirectory>src/main/resources</changeLogDirectory>
-                    <changeLogFile>db/changelog/db.changelog-master.yaml</changeLogFile>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://localhost:5432/CPSDatabase</url>
                     <username>postgres</username>

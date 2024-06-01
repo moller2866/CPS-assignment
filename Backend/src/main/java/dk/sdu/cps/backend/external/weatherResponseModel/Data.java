@@ -1,13 +1,4 @@
 package dk.sdu.cps.backend.external.weatherResponseModel;
 
-public class Data {
-    private Instant instant;
-
-    public Instant getInstant() {
-        return instant;
-    }
-
-    public void setInstant(Instant instant) {
-        this.instant = instant;
-    }
+public record Data(Instant instant, Next_1_hours next_1_hours) {
 }

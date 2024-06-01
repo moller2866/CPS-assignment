@@ -1,0 +1,29 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="moller">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="location"/>
+            </not>
+        </preConditions>
+        <sql>
+            CREATE TABLE location
+            (
+                name      VARCHAR(255) PRIMARY KEY NOT NULL,
+                longitude REAL                     NOT NULL,
+                latitude  REAL                     NOT NULL
+            );
+
+            INSERT INTO location (name, longitude, latitude)
+            VALUES ('Copenhagen', 12.568337, 55.676098);
+            INSERT INTO location (name, longitude, latitude)
+            VALUES ('Aarhus', 10.203921, 56.162939);
+            INSERT INTO location (name, longitude, latitude)
+            VALUES ('Odense', 10.402370, 55.403756);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
