@@ -1,15 +1,15 @@
 package dk.sdu.cps.backend.repository.impl;
 
-import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
-import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
-import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
-import org.jooq.DSLContext;
+import java.time.LocalDateTime;
+import java.util.List;
 
+import org.jooq.DSLContext;
 import org.jooq.generated.public_.tables.records.MeasurementRecord;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
+import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
+import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
 
 import static org.jooq.generated.public_.tables.Measurement.MEASUREMENT;
 
@@ -37,7 +37,8 @@ public class WeatherMeasurementRepositoryImpl implements WeatherMeasurementRepos
     }
 
     public IWeatherMeasurementDTO getLatestFromLocation(String name) {
-        return dslContext.selectFrom(MEASUREMENT)
+        return dslContext
+                .selectFrom(MEASUREMENT)
                 .where(MEASUREMENT.LOCATION_NAME.eq(name))
                 .orderBy(MEASUREMENT.TIME_STAMP.desc())
                 .limit(1)
@@ -46,7 +47,8 @@ public class WeatherMeasurementRepositoryImpl implements WeatherMeasurementRepos
 
     public void create(WeatherMeasurementDTO weatherMeasurementDTO) {
         dslContext
-                .insertInto(MEASUREMENT,
+                .insertInto(
+                        MEASUREMENT,
                         MEASUREMENT.LOCATION_NAME,
                         MEASUREMENT.PRECIPITATION_AMOUNT,
                         MEASUREMENT.TIME_STAMP,
@@ -55,8 +57,7 @@ public class WeatherMeasurementRepositoryImpl implements WeatherMeasurementRepos
                         MEASUREMENT.WIND_SPEED,
                         MEASUREMENT.WIND_DIRECTION,
                         MEASUREMENT.WIND_OF_GUST,
-                        MEASUREMENT.NEXT_HOUR_SYM
-                )
+                        MEASUREMENT.NEXT_HOUR_SYM)
                 .values(
                         weatherMeasurementDTO.getLocationName(),
                         weatherMeasurementDTO.getPrecipitationAmount(),
@@ -66,20 +67,21 @@ public class WeatherMeasurementRepositoryImpl implements WeatherMeasurementRepos
                         weatherMeasurementDTO.getWindSpeed(),
                         weatherMeasurementDTO.getWindDirection(),
                         weatherMeasurementDTO.getWindOfGust(),
-                        weatherMeasurementDTO.getNextHourSym()
-                )
+                        weatherMeasurementDTO.getNextHourSym())
                 .execute();
     }
 
     public List<IWeatherMeasurementDTO> getSinceFromLocation(LocalDateTime time, String name) {
-        return dslContext.selectFrom(MEASUREMENT)
+        return dslContext
+                .selectFrom(MEASUREMENT)
                 .where(MEASUREMENT.LOCATION_NAME.eq(name))
                 .and(MEASUREMENT.TIME_STAMP.gt(time))
                 .fetch(this::measurementObject);
     }
 
     public List<IWeatherMeasurementDTO> getAllFromLocation(String name) {
-        return dslContext.selectFrom(MEASUREMENT)
+        return dslContext
+                .selectFrom(MEASUREMENT)
                 .where(MEASUREMENT.LOCATION_NAME.eq(name))
                 .fetch(this::measurementObject);
     }

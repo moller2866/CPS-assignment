@@ -1,18 +1,15 @@
 package dk.sdu.cps.backend.controller;
 
-import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
-import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
-import dk.sdu.cps.backend.dto.decorator.FahrenheitDecorator;
-import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
-import dk.sdu.cps.backend.service.WeatherMeasurementService;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
+import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
+import dk.sdu.cps.backend.service.WeatherMeasurementService;
 
 @RestController
 @RequestMapping("/api/weather")
@@ -26,7 +23,9 @@ public class WeatherMeasurementController {
     }
 
     @GetMapping("/all")
-    public List<IWeatherMeasurementDTO> getAllFromLocation(@RequestParam(value = "location") String location, @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
+    public List<IWeatherMeasurementDTO> getAllFromLocation(
+            @RequestParam(value = "location") String location,
+            @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
         return weatherService.getAllFromLocation(location, unit);
     }
 
@@ -36,14 +35,17 @@ public class WeatherMeasurementController {
     }
 
     @GetMapping("/since")
-    public List<IWeatherMeasurementDTO> getWeatherMeasurementsSince(@RequestParam(value = "time") String time, @RequestParam(value = "location") String location) {
+    public List<IWeatherMeasurementDTO> getWeatherMeasurementsSince(
+            @RequestParam(value = "time") String time,
+            @RequestParam(value = "location") String location) {
         LocalDateTime timestamp = LocalDateTime.parse(time);
         return weatherService.getWeatherDataSince(timestamp, location);
     }
 
     @GetMapping("/latest")
-    public IWeatherMeasurementDTO getLatestWeatherMeasurement(@RequestParam(value = "location") String location, @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
+    public IWeatherMeasurementDTO getLatestWeatherMeasurement(
+            @RequestParam(value = "location") String location,
+            @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
         return weatherService.getLatestFromLocation(location, unit);
     }
-
 }

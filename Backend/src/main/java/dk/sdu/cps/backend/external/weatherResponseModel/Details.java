@@ -5,5 +5,4 @@ public record Details(
         int relative_humidity,
         Float wind_from_direction,
         Float wind_speed,
-        Float wind_speed_of_gust
-) {}
+        Float wind_speed_of_gust) {}

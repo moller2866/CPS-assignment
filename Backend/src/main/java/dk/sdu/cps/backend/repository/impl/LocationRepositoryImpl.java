@@ -1,14 +1,14 @@
 package dk.sdu.cps.backend.repository.impl;
 
-import dk.sdu.cps.backend.dto.LocationDTO;
-import dk.sdu.cps.backend.repository.LocationRepository;
+import java.util.List;
+
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import dk.sdu.cps.backend.dto.LocationDTO;
+import dk.sdu.cps.backend.repository.LocationRepository;
+
 import static org.jooq.generated.public_.tables.Location.LOCATION;
-
-
-import java.util.List;
 
 @Repository
 public class LocationRepositoryImpl implements LocationRepository {
@@ -21,26 +21,23 @@ public class LocationRepositoryImpl implements LocationRepository {
     @Override
     public void create(LocationDTO location) {
 
-        if (dslContext.selectFrom(LOCATION).where(LOCATION.NAME.eq(location.getName())).fetchOne() != null) {
+        if (dslContext.selectFrom(LOCATION).where(LOCATION.NAME.eq(location.getName())).fetchOne()
+                != null) {
             return;
         }
 
-        dslContext.insertInto(LOCATION,
-                        LOCATION.NAME,
-                        LOCATION.LATITUDE,
-                        LOCATION.LONGITUDE)
-                .values(
-                        location.getName(),
-                        location.getLatitude(),
-                        location.getLongitude()
-                )
+        dslContext
+                .insertInto(LOCATION, LOCATION.NAME, LOCATION.LATITUDE, LOCATION.LONGITUDE)
+                .values(location.getName(), location.getLatitude(), location.getLongitude())
                 .execute();
-
     }
 
     @Override
     public LocationDTO get(String name) {
-        return dslContext.selectFrom(LOCATION).where(LOCATION.NAME.eq(name)).fetchOneInto(LocationDTO.class);
+        return dslContext
+                .selectFrom(LOCATION)
+                .where(LOCATION.NAME.eq(name))
+                .fetchOneInto(LocationDTO.class);
     }
 
     @Override

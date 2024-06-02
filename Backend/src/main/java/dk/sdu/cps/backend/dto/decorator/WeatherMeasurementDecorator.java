@@ -1,8 +1,8 @@
 package dk.sdu.cps.backend.dto.decorator;
 
-import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
-
 import java.time.LocalDateTime;
+
+import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
 
 public abstract class WeatherMeasurementDecorator implements IWeatherMeasurementDTO {
 

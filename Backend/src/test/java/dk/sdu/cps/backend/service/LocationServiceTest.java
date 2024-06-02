@@ -1,14 +1,15 @@
 package dk.sdu.cps.backend.service;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import dk.sdu.cps.backend.dto.LocationDTO;
 import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
 import dk.sdu.cps.backend.external.METExternalAPI;
 import dk.sdu.cps.backend.repository.LocationRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,7 +56,8 @@ class LocationServiceTest {
         doNothing().when(locationRepository).create(any(LocationDTO.class));
         doNothing().when(METExternalAPI).FetchAndSaveMeasurement(any(LocationDTO.class));
         assertDoesNotThrow(() -> locationService.addLocation("Skive"));
-        assertThrows(LocationNotFoundException.class, () -> locationService.addLocation("notExists"));
+        assertThrows(
+                LocationNotFoundException.class, () -> locationService.addLocation("notExists"));
     }
 
     @Test
@@ -65,5 +67,4 @@ class LocationServiceTest {
 
         assertDoesNotThrow(() -> locationService.deleteLocation(locationName));
     }
-
 }

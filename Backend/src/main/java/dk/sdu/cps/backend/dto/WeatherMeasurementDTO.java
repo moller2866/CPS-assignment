@@ -1,12 +1,12 @@
 package dk.sdu.cps.backend.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
-public class WeatherMeasurementDTO implements IWeatherMeasurementDTO{
+public class WeatherMeasurementDTO implements IWeatherMeasurementDTO {
     LocalDateTime timeStamp;
     String locationName;
     Float temperature;
@@ -94,5 +94,4 @@ public class WeatherMeasurementDTO implements IWeatherMeasurementDTO{
             return new WeatherMeasurementDTO(this);
         }
     }
-
 }

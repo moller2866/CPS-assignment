@@ -1,8 +1,8 @@
 package dk.sdu.cps.backend.repository;
 
-import dk.sdu.cps.backend.dto.LocationDTO;
-
 import java.util.List;
+
+import dk.sdu.cps.backend.dto.LocationDTO;
 
 public interface LocationRepository {
     void create(LocationDTO location);

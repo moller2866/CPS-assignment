@@ -1,16 +1,17 @@
 package dk.sdu.cps.backend.service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
 import dk.sdu.cps.backend.dto.LocationDTO;
 import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
 import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
 import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,7 +25,8 @@ class WeatherMeasurementServiceTest {
     void setUp() {
         weatherRepository = mock(WeatherMeasurementRepository.class);
         locationService = mock(LocationService.class);
-        weatherMeasurementService = new WeatherMeasurementService(weatherRepository, locationService);
+        weatherMeasurementService =
+                new WeatherMeasurementService(weatherRepository, locationService);
     }
 
     @Test
@@ -33,8 +35,10 @@ class WeatherMeasurementServiceTest {
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
         when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
-        when(weatherRepository.getSinceFromLocation(time, locationName)).thenReturn(Collections.singletonList(weatherMeasurementDTO));
-        List<IWeatherMeasurementDTO> result = weatherMeasurementService.getWeatherDataSince(time, locationName);
+        when(weatherRepository.getSinceFromLocation(time, locationName))
+                .thenReturn(Collections.singletonList(weatherMeasurementDTO));
+        List<IWeatherMeasurementDTO> result =
+                weatherMeasurementService.getWeatherDataSince(time, locationName);
         assertEquals(1, result.size());
         assertEquals(weatherMeasurementDTO, result.get(0));
     }
@@ -44,9 +48,11 @@ class WeatherMeasurementServiceTest {
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
         when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
-        when(weatherRepository.getAllFromLocation(locationName)).thenReturn(Collections.singletonList(weatherMeasurementDTO));
+        when(weatherRepository.getAllFromLocation(locationName))
+                .thenReturn(Collections.singletonList(weatherMeasurementDTO));
 
-        List<IWeatherMeasurementDTO> result = weatherMeasurementService.getAllFromLocation(locationName, "celsius");
+        List<IWeatherMeasurementDTO> result =
+                weatherMeasurementService.getAllFromLocation(locationName, "celsius");
 
         assertEquals(1, result.size());
         assertEquals(weatherMeasurementDTO, result.get(0));
@@ -57,9 +63,11 @@ class WeatherMeasurementServiceTest {
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
         when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
-        when(weatherRepository.getLatestFromLocation(locationName)).thenReturn(weatherMeasurementDTO);
+        when(weatherRepository.getLatestFromLocation(locationName))
+                .thenReturn(weatherMeasurementDTO);
 
-        IWeatherMeasurementDTO result = weatherMeasurementService.getLatestFromLocation(locationName, "celsius");
+        IWeatherMeasurementDTO result =
+                weatherMeasurementService.getLatestFromLocation(locationName, "celsius");
 
         assertEquals(weatherMeasurementDTO, result);
     }

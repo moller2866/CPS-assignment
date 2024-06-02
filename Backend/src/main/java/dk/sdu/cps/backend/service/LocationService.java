@@ -1,14 +1,15 @@
 package dk.sdu.cps.backend.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import dk.sdu.cps.backend.dto.LocationDTO;
 import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
 import dk.sdu.cps.backend.external.METExternalAPI;
 import dk.sdu.cps.backend.repository.LocationRepository;
 import dk.sdu.cps.backend.util.Coordinates;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class LocationService {
@@ -46,6 +47,4 @@ public class LocationService {
     public void deleteLocation(String name) {
         locationRepository.delete(name);
     }
-
-
 }
