@@ -10,16 +10,6 @@ export default function Primary() {
   const [unitValue, setUnitValue] = useState("celsius");
 
   useEffect(() => {
-    function getLocation() {
-      const location = localStorage.getItem("location");
-      if (location) {
-        setSelectedLocation(location);
-      }
-    }
-    getLocation();
-  }, [setSelectedLocation]);
-
-  useEffect(() => {
     function getUnit() {
       if (unitValue === "fahrenheit") {
         setTempUnit("°F");
@@ -27,7 +17,6 @@ export default function Primary() {
         setTempUnit("°C");
       }
     }
-    console.log(unitValue);
     getUnit();
   }, [unitValue]);
 

@@ -57,7 +57,7 @@ export default function BasicLineChart(props) {
                 String(date.getMinutes()).padStart(2, "0") +
                 ":" +
                 String(date.getSeconds()).padStart(2, "0");
-              return formattedDate; // Add return statement here
+              return formattedDate;
             },
           },
         ]}

@@ -1,4 +1,3 @@
-// components/Weather.js
 import React, { useEffect, useState } from "react";
 import { fetchWeatherData } from "../services/WeatherService";
 import {

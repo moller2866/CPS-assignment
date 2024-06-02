@@ -26,7 +26,7 @@ function Navigation(props) {
         alignItems: "center",
       }}
     >
-      <FormControl>
+      <FormControl sx={{ mt: 2 }}>
         <FormLabel>Unit</FormLabel>
         <RadioGroup value={unitValue} onChange={handleChange}>
           <FormControlLabel
