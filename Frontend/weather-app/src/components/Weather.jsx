@@ -9,37 +9,23 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import { useSnackbar } from "notistack";
 
 function Weather(props) {
   const [weather, setWeather] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
-  const { location } = props;
-  const [tempUnit, setTempUnit] = useState("°C");
-  const [unitValue, setUnitValue] = useState("celsius");
+  const { location, unitValue, tempUnit } = props;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetchWeatherData(location, unitValue);
         setWeather(response.data);
-        if (unitValue === "fahrenheit") {
-          setTempUnit("°F");
-        } else {
-          setTempUnit("°C");
-        }
       } catch (error) {
-        // Display a snackbar notification
         enqueueSnackbar("Failed to fetch weather data", { variant: "error" });
       }
     };
     fetchData();
-
     const interval = setInterval(() => {
       fetchData();
     }, 5 * 60 * 1000);
@@ -54,28 +40,8 @@ function Weather(props) {
       </Box>
     );
   }
-
-  const handleChange = (event) => {
-    setUnitValue(event.target.value);
-  };
-
   return (
     <Box>
-      <FormControl>
-        <FormLabel>Unit</FormLabel>
-        <RadioGroup value={unitValue} onChange={handleChange}>
-          <FormControlLabel
-            value="celsius"
-            control={<Radio />}
-            label="Celsius"
-          />
-          <FormControlLabel
-            value="fahrenheit"
-            control={<Radio />}
-            label="Fahrenheit"
-          />
-        </RadioGroup>
-      </FormControl>
       <Card sx={{ maxWidth: 345, margin: "auto", mt: 5 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
