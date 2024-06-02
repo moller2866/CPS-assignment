@@ -46,7 +46,7 @@ class WeatherMeasurementServiceTest {
         when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
         when(weatherRepository.getAllFromLocation(locationName)).thenReturn(Collections.singletonList(weatherMeasurementDTO));
 
-        List<IWeatherMeasurementDTO> result = weatherMeasurementService.getAllFromLocation(locationName);
+        List<IWeatherMeasurementDTO> result = weatherMeasurementService.getAllFromLocation(locationName, "celsius");
 
         assertEquals(1, result.size());
         assertEquals(weatherMeasurementDTO, result.get(0));
@@ -59,7 +59,7 @@ class WeatherMeasurementServiceTest {
         when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
         when(weatherRepository.getLatestFromLocation(locationName)).thenReturn(weatherMeasurementDTO);
 
-        IWeatherMeasurementDTO result = weatherMeasurementService.getLatestFromLocation(locationName);
+        IWeatherMeasurementDTO result = weatherMeasurementService.getLatestFromLocation(locationName, "celsius");
 
         assertEquals(weatherMeasurementDTO, result);
     }

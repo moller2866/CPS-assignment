@@ -2,12 +2,15 @@ package dk.sdu.cps.backend.service;
 
 import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
 import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
+import dk.sdu.cps.backend.dto.decorator.FahrenheitDecorator;
 import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
 import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class WeatherMeasurementService {
@@ -26,16 +29,22 @@ public class WeatherMeasurementService {
         return weatherRepository.getSinceFromLocation(time, name);
     }
 
-    public List<IWeatherMeasurementDTO> getAllFromLocation(String name) throws LocationNotFoundException {
+    public List<IWeatherMeasurementDTO> getAllFromLocation(String name, String unit) throws LocationNotFoundException {
         if (locationService.getLocation(name) == null) {
             throw new LocationNotFoundException(name);
+        }
+        if (unit.equals("fahrenheit")) {
+            return weatherRepository.getAllFromLocation(name).stream().map(FahrenheitDecorator::new).collect(Collectors.toList());
         }
         return weatherRepository.getAllFromLocation(name);
     }
 
-    public IWeatherMeasurementDTO getLatestFromLocation(String name) throws LocationNotFoundException {
+    public IWeatherMeasurementDTO getLatestFromLocation(String name, String unit) throws LocationNotFoundException {
         if (locationService.getLocation(name) == null) {
             throw new LocationNotFoundException(name);
+        }
+        if (unit.equals("fahrenheit")) {
+            return new FahrenheitDecorator(weatherRepository.getLatestFromLocation(name));
         }
         return weatherRepository.getLatestFromLocation(name);
     }

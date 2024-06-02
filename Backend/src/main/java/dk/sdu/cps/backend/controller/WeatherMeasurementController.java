@@ -27,10 +27,7 @@ public class WeatherMeasurementController {
 
     @GetMapping("/all")
     public List<IWeatherMeasurementDTO> getAllFromLocation(@RequestParam(value = "location") String location, @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
-        if (Objects.equals(unit, "fahrenheit")) {
-            return weatherService.getAllFromLocation(location).stream().map(FahrenheitDecorator::new).collect(Collectors.toList());
-        }
-        return weatherService.getAllFromLocation(location);
+        return weatherService.getAllFromLocation(location, unit);
     }
 
     @ExceptionHandler(LocationNotFoundException.class)
@@ -46,10 +43,7 @@ public class WeatherMeasurementController {
 
     @GetMapping("/latest")
     public IWeatherMeasurementDTO getLatestWeatherMeasurement(@RequestParam(value = "location") String location, @RequestParam(value = "unit", defaultValue = "celsius") String unit) {
-        if (Objects.equals(unit, "fahrenheit")) {
-            return new FahrenheitDecorator(weatherService.getLatestFromLocation(location));
-        }
-        return weatherService.getLatestFromLocation(location);
+        return weatherService.getLatestFromLocation(location, unit);
     }
 
 }
