@@ -34,8 +34,16 @@ function Weather(props) {
 
   if (!weather) {
     return (
-      <Box justifyContent={"center"} alignContent={"center"}>
-        <CircularProgress />;
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 5,
+        }}
+      >
+        <CircularProgress size={"100px"} />
       </Box>
     );
   }
@@ -59,14 +67,14 @@ function Weather(props) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-                Air Temperature: {weather.temperature}
+              <Typography variant="body2" color="text.secondary">
+                Temperature: {weather.temperature}
                 {tempUnit}
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" color="text.secondary">
-                Relative Humidity: {weather.humidity}%
+                Humidity: {weather.humidity}%
               </Typography>
             </Grid>
             <Grid item xs={12}>

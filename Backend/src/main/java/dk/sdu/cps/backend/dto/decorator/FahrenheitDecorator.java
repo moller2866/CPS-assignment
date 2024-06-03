@@ -10,6 +10,10 @@ public class FahrenheitDecorator extends WeatherMeasurementDecorator {
 
     @Override
     public Float getTemperature() {
-        return (super.getTemperature() * 9 / 5) + 32;
+        return covertToFarhenheit(super.getTemperature());
+    }
+
+    private Float covertToFarhenheit(Float temperature) {
+        return (temperature * 9 / 5) + 32;
     }
 }

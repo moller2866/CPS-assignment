@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchAllWeatherData } from "../services/WeatherService";
 import { useSnackbar } from "notistack";
 import { Box } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function BasicLineChart(props) {
   const { location, unitValue, tempUnit } = props;
@@ -28,6 +29,22 @@ export default function BasicLineChart(props) {
 
     return () => clearInterval(interval);
   }, [location, unitValue]);
+
+  if (weatherData.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 5,
+        }}
+      >
+        <CircularProgress size={"100px"} />
+      </Box>
+    );
+  }
 
   return (
     <Box
