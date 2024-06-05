@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import dk.sdu.cps.backend.dto.IWeatherMeasurementDTO;
-import dk.sdu.cps.backend.dto.LocationDTO;
 import dk.sdu.cps.backend.dto.WeatherMeasurementDTO;
 import dk.sdu.cps.backend.exceptions.LocationNotFoundException;
 import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
@@ -18,15 +17,13 @@ import static org.mockito.Mockito.*;
 
 class WeatherMeasurementServiceTest {
     private WeatherMeasurementRepository weatherRepository;
-    private LocationService locationService;
     private WeatherMeasurementService weatherMeasurementService;
 
     @BeforeEach
     void setUp() {
         weatherRepository = mock(WeatherMeasurementRepository.class);
-        locationService = mock(LocationService.class);
         weatherMeasurementService =
-                new WeatherMeasurementService(weatherRepository, locationService);
+                new WeatherMeasurementService(weatherRepository);
     }
 
     @Test
@@ -34,7 +31,6 @@ class WeatherMeasurementServiceTest {
         LocalDateTime time = LocalDateTime.now();
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
-        when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
         when(weatherRepository.getSinceFromLocation(time, locationName))
                 .thenReturn(Collections.singletonList(weatherMeasurementDTO));
         List<IWeatherMeasurementDTO> result =
@@ -47,7 +43,6 @@ class WeatherMeasurementServiceTest {
     void getAllFromLocation() throws LocationNotFoundException {
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
-        when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
         when(weatherRepository.getAllFromLocation(locationName))
                 .thenReturn(Collections.singletonList(weatherMeasurementDTO));
 
@@ -62,7 +57,6 @@ class WeatherMeasurementServiceTest {
     void getLatestFromLocation() throws LocationNotFoundException {
         String locationName = "TestLocation";
         IWeatherMeasurementDTO weatherMeasurementDTO = WeatherMeasurementDTO.builder().build();
-        when(locationService.getLocation(locationName)).thenReturn(new LocationDTO());
         when(weatherRepository.getLatestFromLocation(locationName))
                 .thenReturn(weatherMeasurementDTO);
 

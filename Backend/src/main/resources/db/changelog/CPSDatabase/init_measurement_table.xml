@@ -23,7 +23,6 @@
                 wind_speed           REAL,
                 wind_direction       REAL,
                 next_hour_sym        VARCHAR(255),
-                FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE,
                 CONSTRAINT measurement_location_name_fk FOREIGN KEY (location_name) REFERENCES location (name) ON DELETE CASCADE
             );
         </sql>

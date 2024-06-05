@@ -14,27 +14,19 @@ import dk.sdu.cps.backend.repository.WeatherMeasurementRepository;
 @Service
 public class WeatherMeasurementService {
     private final WeatherMeasurementRepository weatherRepository;
-    private final LocationService locationService;
 
     public WeatherMeasurementService(
-            WeatherMeasurementRepository weatherRepository, LocationService locationService) {
+            WeatherMeasurementRepository weatherRepository) {
         this.weatherRepository = weatherRepository;
-        this.locationService = locationService;
     }
 
     public List<IWeatherMeasurementDTO> getWeatherDataSince(LocalDateTime time, String name)
             throws LocationNotFoundException {
-        if (locationService.getLocation(name) == null) {
-            throw new LocationNotFoundException(name);
-        }
         return weatherRepository.getSinceFromLocation(time, name);
     }
 
     public List<IWeatherMeasurementDTO> getAllFromLocation(String name, String unit)
             throws LocationNotFoundException {
-        if (locationService.getLocation(name) == null) {
-            throw new LocationNotFoundException(name);
-        }
         if (unit.equals("fahrenheit")) {
             return weatherRepository.getAllFromLocation(name).stream()
                     .map(FahrenheitDecorator::new)
@@ -45,9 +37,6 @@ public class WeatherMeasurementService {
 
     public IWeatherMeasurementDTO getLatestFromLocation(String name, String unit)
             throws LocationNotFoundException {
-        if (locationService.getLocation(name) == null) {
-            throw new LocationNotFoundException(name);
-        }
         if (unit.equals("fahrenheit")) {
             return new FahrenheitDecorator(weatherRepository.getLatestFromLocation(name));
         }
